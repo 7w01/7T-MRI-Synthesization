@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from typing import Tuple, Optional
 import numpy as np
 import os
-from utils import patchify, unpatchify
+from loss import patchify, unpatchify
 
 # 10,8839,1168   1,088,391,168
 # [144, 144, 144]

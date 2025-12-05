@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from .vnet_part import InputTransition, DownTransition, UpTransition
+from vnet_part import InputTransition, DownTransition, UpTransition
 
 
 class VNet(nn.Module):

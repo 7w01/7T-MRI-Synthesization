@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 from dataloaders.hippo_subfield import HippoSubfieldSeg
-from networks.vnet import VNet
+from models.VNet.arch import *
 import matplotlib.pyplot as plt
 import os
 
