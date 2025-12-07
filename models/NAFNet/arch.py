@@ -18,7 +18,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from .block import NAFBlock3d
-from utils import PixelShuffle3d
+from patch_transformation import PixelShuffle3d
 
 
 class NAFNet3d(nn.Module):

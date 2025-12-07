@@ -34,7 +34,8 @@ class InputTransition(nn.Module):
 
     def forward(self, x):
         out = self.relu1(self.bn1(self.conv1(x)))
-        x16 = torch.cat((x, x, x, x), 1)
+        x16 = torch.cat((x, x, x, x, x, x, x, x,
+                         x, x, x, x, x, x, x, x), 1)
         out = torch.add(out, x16)
         return out
 
@@ -75,12 +76,9 @@ class UpTransition(nn.Module):
 
     def forward(self, x, skipx):
         out = self.do1(x)
-        del x
         skipxdo = self.do2(skipx)
         up = self.relu1(self.bn1(self.up_conv(self.upsample(out))))
         up = torch.cat((up, skipxdo), 1)
-        del skipxdo
         out = self.ops(up)
         out = torch.add(out, up)
         return out
-    
