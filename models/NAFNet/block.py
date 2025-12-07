@@ -16,7 +16,7 @@ Simple Baselines for Image Restoration
 import torch
 import torch.nn as nn
 
-from layer_norm import LayerNorm3d
+from .layer_norm import LayerNorm3d
 
 
 class SimpleGate(nn.Module):
@@ -27,7 +27,7 @@ class SimpleGate(nn.Module):
 class NAFBlock3d(nn.Module):
     def __init__(self, in_channels, DW_Expand=2, FFN_Expand=2, drop_out_rate=0.):
         super().__init__()
-        dw_channels = in_channels * DW_Expand
+        dw_channels = DW_Expand * in_channels
         self.conv1 = nn.Conv3d(in_channels, dw_channels, kernel_size=1, padding=0, stride=1, groups=1, bias=True)
         self.conv2 = nn.Conv3d(dw_channels, dw_channels, kernel_size=3, padding=1, stride=1, groups=dw_channels, bias=True)
         self.conv3 = nn.Conv3d(dw_channels // 2, in_channels, kernel_size=1, padding=0, stride=1, groups=1, bias=True)

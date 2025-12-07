@@ -18,13 +18,15 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from .block import NAFBlock3d
-from patch_transformation import PixelShuffle3d
+from .pixel_shuffle import PixelShuffle3d
 
 
-class NAFNet3d(nn.Module):
+class NAFNet(nn.Module):
 
-    def __init__(self, in_channels=1, embed_channels=16, middle_blk_num=1, enc_blk_nums=[], dec_blk_nums=[]):
+    def __init__(self, args, middle_blk_num=1, enc_blk_nums=[2, 2, 2], dec_blk_nums=[2, 2, 2]):
         super().__init__()
+        in_channels = 1
+        embed_channels = args.embed_channels
 
         self.intro = nn.Conv3d(in_channels, embed_channels, kernel_size=3, padding=1, stride=1, groups=1, bias=True)
         self.ending = nn.Conv3d(embed_channels, in_channels, kernel_size=3, padding=1, stride=1, groups=1, bias=True)
@@ -39,13 +41,13 @@ class NAFNet3d(nn.Module):
         for num in enc_blk_nums:
             self.encoders.append(nn.Sequential(*[NAFBlock3d(channels) for _ in range(num)]))
 
-            self.downs.append(nn.Conv3d(channels, 2*channels, 2, 2))
+            self.downs.append(nn.Conv3d(channels, 2 * channels, 2, 2))
             channels = channels * 2
 
         self.middle_blks = nn.Sequential(*[NAFBlock3d(channels) for _ in range(middle_blk_num)])
 
         for num in dec_blk_nums:
-            self.ups.append(nn.Sequential(nn.Conv3d(channels, channels * 2, 1, bias=False), PixelShuffle3d(2)))
+            self.ups.append(nn.Sequential(nn.Conv3d(channels, channels * 4, 1, bias=False), PixelShuffle3d(2)))
             channels = channels // 2
 
             self.decoders.append(nn.Sequential(*[NAFBlock3d(channels) for _ in range(num)]))
@@ -73,7 +75,6 @@ class NAFNet3d(nn.Module):
             x = decoder(x)
 
         x = self.ending(x)
-        x = x + inp
 
         return x[:, :, :H, :W, :D]
 

@@ -130,12 +130,34 @@ def pre_transforms(args, data_dict):
             margin=0,
             allow_missing_keys=False
         ),
+        # transforms.Resized(
+        #     keys="3t",
+        #     spatial_size=args.img_size_3t,
+        #     mode="trilinear"
+        # ),
+        # transforms.Resized(
+        #     keys="7t",
+        #     spatial_size=args.img_size_7t,
+        #     mode="trilinear"
+        # ),
         transforms.Resized(
             keys=["3t", "7t"],
             spatial_size=args.img_size_7t,
-            # spatial_size=[144, 176, 160], 
-            mode=["trilinear", "trilinear"]),
-        MinMaxNormalizationd(keys=["3t", "7t"]),
+            mode=["trilinear", "trilinear"]
+        ),
+        # MinMaxNormalizationd(keys=["3t", "7t"]),
+        # transforms.ScaleIntensityRangePercentilesd(
+        #     keys=["3t", "7t"],
+        #     lower=0, 
+        #     upper=99.5, 
+        #     b_min=0.0, 
+        #     b_max=1.0, 
+        #     clip=True
+        # ),
+        transforms.NormalizeIntensityd(
+            keys=["3t", "7t"],
+            nonzero=True
+        ),
         GridPatch(
             keys=["3t", "7t"],
             patch_size=args.patch_size,

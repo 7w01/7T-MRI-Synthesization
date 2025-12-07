@@ -1,3 +1,5 @@
+import importlib
+import sys
 import torch
 import torch.nn.functional as F
 
@@ -12,12 +14,15 @@ from models.VNet.arch import *
 if __name__ == '__main__':
 
     args = args_config()
-    
+
+    print(f"Model: {args.model}")
     print(f"Using device: {args.device}")
-    print(f"\nModel: {args.model}")
 
     # initialize model
-    model = VNet().to(args.device)
+    model_module = importlib.import_module(f"models.{args.model}")
+    Model = getattr(model_module, args.model)
+
+    model = Model(args).to(args.device)
 
     # load dataloaders
     train_dataloader, val_dataloader = HippoSubfieldSeg(args)

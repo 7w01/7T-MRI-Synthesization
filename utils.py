@@ -20,7 +20,7 @@ def args_config():
     
     # Model
     parser.add_argument('--model', type=str)
-    parser.add_argument('--embed_channels', type=int, default=4)
+    parser.add_argument('--embed_channels', type=int, default=16)
     parser.add_argument('--patch_size', type=int, default=[64, 64, 64])
     parser.add_argument('--grid_size', type=int, default=[5, 6, 5])
     parser.add_argument('--overlap', type=int, default=[8, 8, 8])

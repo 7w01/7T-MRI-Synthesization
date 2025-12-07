@@ -1,12 +1,11 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from .vnet_part import InputTransition, DownTransition, UpTransition
 
 
 class VNet(nn.Module):
-    def __init__(
-            self
-    ):
+    def __init__(self, args):
         super().__init__()
         self.in_tr = InputTransition(16)
         self.down_tr32 = DownTransition(16, 2)
